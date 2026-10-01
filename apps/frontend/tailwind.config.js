@@ -1,0 +1,50 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: 'class',
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/features/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'surface': '#111319',
+        'surface-container-lowest': '#0c0e14',
+        'surface-container-low': '#191b22',
+        'surface-container': '#1e1f26',
+        'surface-container-high': '#282a30',
+        'surface-container-highest': '#33343b',
+        'primary': '#ffb3ae',
+        'primary-container': '#ff5352',
+        'on-primary-container': '#5c0008',
+        'secondary': '#ffb690',
+        'secondary-container': '#ec6a06',
+        'on-secondary-container': '#4a1c00',
+        'tertiary': '#f9bd22',
+        'tertiary-container': '#b88900',
+        'on-tertiary-container': '#372700',
+        'on-surface': '#e2e2eb',
+        'on-surface-variant': '#e4beba',
+        'outline': '#ab8986',
+        'outline-variant': '#5b403e',
+        'error': '#ffb4ab',
+        'error-container': '#93000a',
+      },
+      borderRadius: {
+        'DEFAULT': '0.25rem',
+        'lg': '0.5rem',
+        'xl': '0.75rem',
+        '2xl': '1rem',
+        'full': '9999px',
+      },
+      fontFamily: {
+        'display': ['Outfit', 'sans-serif'],
+        'body': ['Outfit', 'sans-serif'],
+        'label': ['Space Grotesk', 'sans-serif'],
+      },
+    },
+  },
+  plugins: [],
+}

@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # 🐘 Banco de Dados Relacional & Documental (JSONB)
+  postgres:
+    image: postgres:16-alpine
+    container_name: come_pizza_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: come_pizza_db
+      POSTGRES_USER: come_pizza
+      POSTGRES_PASSWORD: come_pizza_secret
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U come_pizza -d come_pizza_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - come_pizza_network
+
+  # ⚡ Armazenamento In-Memory, Cache & Rastreamento GPS (Pub/Sub)
+  redis:
+    image: redis:7-alpine
+    container_name: come_pizza_redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - come_pizza_network
+
+  # 🔥 Backend API & Regras de Domínio (Node.js + TypeScript + Fastify)
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: come_pizza_backend
+    restart: always
+    ports:
+      - '3001:3001'
+    environment:
+      PORT: 3001
+      NODE_ENV: production
+      DATABASE_URL: postgresql://come_pizza:come_pizza_secret@postgres:5432/come_pizza_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - come_pizza_network
+
+  # 🍕 Frontend Web & Mobile App (Next.js 14 + React)
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: come_pizza_frontend
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    depends_on:
+      - backend
+    networks:
+      - come_pizza_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  come_pizza_network:
+    driver: bridge

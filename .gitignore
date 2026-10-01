@@ -1,0 +1,47 @@
+# Dependencies & Package Managers
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js Build & Static Export Outputs
+apps/frontend/.next/
+apps/frontend/out/
+.next/
+out/
+build/
+dist/
+
+# TypeScript & Vitest Caches
+*.tsbuildinfo
+coverage/
+.vitest/
+.turbo/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# Operating System & IDE Files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Temporary Files & Logs
+*.log
+logs/
+tmp/
+temp/

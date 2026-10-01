@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "b146008599c31057cef1c145774cea5d5afb30e8f43fa802e47a4b461419aaaf"
+    },
+    "grill-with-docs": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/grill-with-docs/SKILL.md",
+      "computedHash": "a610223c9796f755b603f15ec114849a4b38b9ba3006acfa9bdf3cc56dd44dad"
+    },
+    "svg-design": {
+      "source": "tryopendata/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/opendesign/skills/svg-design/SKILL.md",
+      "computedHash": "8e7b8a23e59204b4b37d8785f0837976e7d23e07448b5e696c046d4076339836"
+    },
+    "workflow-execute-plans": {
+      "source": "heyvhuang/ship-faster",
+      "sourceType": "github",
+      "skillPath": "skills/workflow-execute-plans/SKILL.md",
+      "computedHash": "a8d2ea66340e935399a583e8fe72d5d1a54fbb42755cc5a3d44107a98570a8a3"
+    },
+    "writing-plans": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/writing-plans/SKILL.md",
+      "computedHash": "c2647b5bf067be353a893e5a39a632cbbeb7ad81e61fa5ae227ece5490029073"
+    }
+  }
+}
