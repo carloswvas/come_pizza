@@ -1,7 +1,7 @@
 # Stage 1: Builder
 FROM node:20-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@10.14.0 --activate
+RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
 WORKDIR /app
 
@@ -19,6 +19,9 @@ COPY apps/backend ./apps/backend
 # Compilar TypeScript do backend
 RUN pnpm --filter @come-pizza/backend build
 
+# Isolamento de dependências de produção via pnpm deploy
+RUN pnpm deploy --filter=@come-pizza/backend --prod /deploy
+
 # Stage 2: Runner
 FROM node:20-alpine AS runner
 
@@ -27,9 +30,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3001
 
-COPY --from=builder /app/apps/backend/package.json ./
-COPY --from=builder /app/apps/backend/dist ./dist
-COPY --from=builder /app/apps/backend/node_modules ./node_modules
+# Copiar aplicação pronta e isolada
+COPY --from=builder /deploy ./
 
 EXPOSE 3001
 
