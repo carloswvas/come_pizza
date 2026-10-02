@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { CatalogProduct } from '../types/catalog.types';
+import { CatalogProduct } from '../../types/catalog.types';
 
-interface CustomizeModalProps {
+export interface CustomizeModalProps {
   product: CatalogProduct | null;
   onClose: () => void;
   onConfirm: (product: CatalogProduct, size: string, crust: string, extras: string[]) => void;

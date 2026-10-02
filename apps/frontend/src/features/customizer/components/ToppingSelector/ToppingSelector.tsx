@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { CustomizerTopping } from '../customizer.types';
-import { MOCK_TOPPINGS } from '../customizer.mock';
+import { CustomizerTopping } from '../../types';
+import { MOCK_TOPPINGS } from '../../mocks';
 
-interface ToppingSelectorProps {
+export interface ToppingSelectorProps {
   selectedToppings: CustomizerTopping[];
   onToggleTopping: (topping: CustomizerTopping) => void;
 }

@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { CustomizerCrust } from '../customizer.types';
-import { MOCK_CRUSTS } from '../customizer.mock';
+import { CustomizerCrust } from '../../types';
+import { MOCK_CRUSTS } from '../../mocks';
 
-interface CrustSelectorProps {
+export interface CrustSelectorProps {
   selectedCrust: CustomizerCrust;
   onSelectCrust: (crust: CustomizerCrust) => void;
 }

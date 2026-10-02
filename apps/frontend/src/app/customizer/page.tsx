@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Header } from '@/shared/components/Header';
+import { Header } from '@/components';
 import { CartDrawer, CartItem, MOCK_INITIAL_CART } from '@/features/catalog';
 import {
   Pizza2DCanvas,

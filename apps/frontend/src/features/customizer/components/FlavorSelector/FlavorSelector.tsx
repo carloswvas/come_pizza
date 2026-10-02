@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { FlavorMode, CustomizerFlavor } from '../customizer.types';
-import { MOCK_FLAVORS } from '../customizer.mock';
+import { FlavorMode, CustomizerFlavor } from '../../types';
+import { MOCK_FLAVORS } from '../../mocks';
 
-interface FlavorSelectorProps {
+export interface FlavorSelectorProps {
   flavorMode: FlavorMode;
   flavor1: CustomizerFlavor;
   flavor2: CustomizerFlavor;

@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { PizzaSizeOption } from '../customizer.types';
-import { MOCK_SIZES } from '../customizer.mock';
+import { PizzaSizeOption } from '../../types';
+import { MOCK_SIZES } from '../../mocks';
 
-interface SizeSelectorProps {
+export interface SizeSelectorProps {
   selectedSize: PizzaSizeOption;
   onSelectSize: (size: PizzaSizeOption) => void;
 }

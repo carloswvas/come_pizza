@@ -3,7 +3,7 @@ import {
   CustomizerFlavor,
   CustomizerCrust,
   CustomizerTopping,
-} from './customizer.types';
+} from '../types';
 
 export const MOCK_SIZES: PizzaSizeOption[] = [
   {

@@ -1,0 +1,1 @@
+export { PairingStrip } from './PairingStrip';

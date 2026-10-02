@@ -1,8 +1,8 @@
 'use client';
 
-import { CatalogProduct } from '../types/catalog.types';
+import { CatalogProduct } from '../../types/catalog.types';
 
-interface ProductCardProps {
+export interface ProductCardProps {
   product: CatalogProduct;
   onAddToCart: (product: CatalogProduct) => void;
   onCustomize: (product: CatalogProduct) => void;

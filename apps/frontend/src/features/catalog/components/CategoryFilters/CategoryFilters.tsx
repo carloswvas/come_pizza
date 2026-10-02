@@ -1,6 +1,6 @@
 'use client';
 
-interface CategoryFiltersProps {
+export interface CategoryFiltersProps {
   selectedCategory: string;
   onSelectCategory: (id: string) => void;
   categories: Array<{ id: string; label: string; icon: string; count: number }>;

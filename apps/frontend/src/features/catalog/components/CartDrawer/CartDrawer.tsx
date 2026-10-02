@@ -1,6 +1,6 @@
 'use client';
 
-import { CartItem } from '../types/catalog.types';
+import { CartItem } from '../../types/catalog.types';
 
 export interface CartDrawerProps {
   items: CartItem[];

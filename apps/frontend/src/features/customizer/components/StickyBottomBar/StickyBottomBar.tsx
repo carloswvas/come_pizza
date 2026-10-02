@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { CustomizerState } from '../customizer.types';
+import { CustomizerState } from '../../types';
 
-interface StickyBottomBarProps {
+export interface StickyBottomBarProps {
   state: CustomizerState;
   onAddToCart: () => void;
 }

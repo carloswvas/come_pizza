@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { CustomizerState, BakeLevel } from '../customizer.types';
+import { CustomizerState, BakeLevel } from '../../types';
 
-interface Pizza2DCanvasProps {
+export interface Pizza2DCanvasProps {
   state: CustomizerState;
   onBakeChange: (level: BakeLevel) => void;
 }
