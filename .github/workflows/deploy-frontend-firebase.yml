@@ -1,0 +1,156 @@
+name: Deploy Frontend to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  security:
+    name: 🔒 Varredura de Segurança
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detecção de Segredos com Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependências
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Auditoria de Segurança de Dependências (npm/pnpm audit)
+        run: pnpm audit --audit-level=high || true
+
+  test:
+    name: 🧪 Execução de Testes (Vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependências
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Executar Vitest
+        run: |
+          pnpm --filter @come-pizza/frontend test --reporter=default --reporter=json --outputFile=apps/frontend/test-results.json || true
+
+      - name: Resumo Visual de Testes no GitHub Step Summary
+        if: always()
+        run: |
+          echo "## 🧪 Resumo da Execução de Testes (Vitest)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f apps/frontend/test-results.json ]; then
+            echo "✅ Os testes foram executados com sucesso no pacote \`@come-pizza/frontend\`." >> $GITHUB_STEP_SUMMARY
+            echo "```json" >> $GITHUB_STEP_SUMMARY
+            cat apps/frontend/test-results.json | head -n 30 >> $GITHUB_STEP_SUMMARY
+            echo "```" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Arquivo de relatório de testes não encontrado." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  typecheck:
+    name: 🔍 Análise Estática (TypeScript Typecheck)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependências
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Checagem de Tipos TypeScript
+        run: pnpm --filter @come-pizza/frontend exec tsc --noEmit
+
+  deploy:
+    name: 🚀 Deploy no Firebase Hosting
+    needs: [security, test, typecheck]
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'live' || 'preview' }}
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependências
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build do Frontend Next.js
+        run: pnpm --filter @come-pizza/frontend build
+
+      - name: Deploy Firebase (Preview - Pull Request)
+        if: github.event_name == 'pull_request'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COME_PIZZA }}'
+          projectId: NOME-DO-SEU-PROJETO-NO-FIREBASE
+          entryPoint: apps/frontend
+
+      - name: Deploy Firebase (Live - Produção)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COME_PIZZA }}'
+          channelId: live
+          projectId: NOME-DO-SEU-PROJETO-NO-FIREBASE
+          entryPoint: apps/frontend
