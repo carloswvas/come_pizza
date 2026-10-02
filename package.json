@@ -2,6 +2,7 @@
   "name": "come-pizza-monorepo",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
   "description": "Monorepo pnpm do COME PIZZA - Delivery D2C de Pizza Artesanal",
   "scripts": {
     "dev:backend": "pnpm --filter @come-pizza/backend dev",
