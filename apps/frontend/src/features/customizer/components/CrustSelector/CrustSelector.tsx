@@ -11,51 +11,68 @@ export interface CrustSelectorProps {
 
 export const CrustSelector: React.FC<CrustSelectorProps> = ({ selectedCrust, onSelectCrust }) => {
   return (
-    <section className="bg-surface-container rounded-2xl p-space-lg shadow-md space-y-space-md">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-space-xs">
-          <span className="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-label-sm text-label-sm text-primary">
+    <section className="bg-surface-container-low rounded-2xl p-5 md:p-6 shadow-sm border border-surface-container-high/40 space-y-4">
+      {/* Step Header */}
+      <div className="flex items-center justify-between pb-2 border-b border-surface-container-high/40">
+        <div className="flex items-center gap-3">
+          <span className="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label text-xs font-bold shrink-0">
             03
           </span>
-          <h2 className="font-headline-sm text-headline-sm text-on-surface">
+          <h2 className="font-display text-xl text-on-surface font-bold">
             Estilo do Cornicione (Borda)
           </h2>
         </div>
-        <span className="font-label-sm text-label-sm uppercase text-outline">
-          Fechamento Manual
+        <span className="font-label text-xs uppercase tracking-wider text-on-surface-variant font-medium hidden sm:inline-block">
+          Selada no Fogo Vivo
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+      {/* Crust Options Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {MOCK_CRUSTS.map((crust) => {
           const isSelected = selectedCrust.id === crust.id;
+          const formattedPrice = (crust.priceCents / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          });
+
           return (
             <button
               key={crust.id}
               type="button"
               onClick={() => onSelectCrust(crust)}
-              className={`p-space-md rounded-xl text-left flex items-start justify-between cursor-pointer transition-all ${
+              className={`p-4 rounded-xl text-left flex items-start justify-between cursor-pointer transition-all duration-200 min-h-[80px] ${
                 isSelected
-                  ? 'bg-surface-container-high ring-1 ring-secondary-container/50'
-                  : 'bg-surface-container-low hover:bg-surface-container-high'
+                  ? 'bg-surface-container-high ring-2 ring-secondary-container shadow-md'
+                  : 'bg-surface-container hover:bg-surface-container-high'
               }`}
             >
-              <div>
-                <p className="font-body-md text-body-md font-semibold text-on-surface">
-                  {crust.name}
-                </p>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={`material-symbols-outlined text-[18px] ${
+                      isSelected ? 'text-secondary-container' : 'text-outline'
+                    }`}
+                  >
+                    {isSelected ? 'check_circle' : 'radio_button_unchecked'}
+                  </span>
+                  <p className="font-label text-sm font-bold text-on-surface">
+                    {crust.name}
+                  </p>
+                </div>
+                <p className="font-body text-xs text-on-surface-variant leading-tight pl-6">
                   {crust.description}
                 </p>
               </div>
+
               <span
-                className={`font-label-sm text-label-sm uppercase px-2 py-0.5 rounded bg-surface-container-lowest ${
-                  crust.priceCents > 0 ? 'text-primary font-semibold' : 'text-outline'
+                className={`font-label text-xs uppercase px-2 py-1 rounded-md shrink-0 font-bold ${
+                  crust.priceCents > 0
+                    ? 'bg-primary-container/20 text-primary'
+                    : 'bg-surface-container-highest text-outline'
                 }`}
               >
-                {crust.priceCents > 0
-                  ? `+R$ ${(crust.priceCents / 100).toFixed(2).replace('.', ',')}`
-                  : 'Inclusa'}
+                {crust.priceCents > 0 ? `+${formattedPrice}` : 'Inclusa'}
               </span>
             </button>
           );

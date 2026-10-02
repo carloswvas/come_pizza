@@ -22,71 +22,80 @@ export const FlavorSelector: React.FC<FlavorSelectorProps> = ({
   const isSplit = flavorMode === 'split';
 
   return (
-    <section className="bg-surface-container rounded-2xl p-space-lg shadow-md space-y-space-md">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
-        <div className="flex items-center gap-space-xs">
-          <span className="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-label-sm text-label-sm text-primary">
+    <section className="bg-surface-container-low rounded-2xl p-5 md:p-6 shadow-sm border border-surface-container-high/40 space-y-4">
+      {/* Step Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container-high/40">
+        <div className="flex items-center gap-3">
+          <span className="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label text-xs font-bold shrink-0">
             02
           </span>
-          <h2 className="font-headline-sm text-headline-sm text-on-surface">
+          <h2 className="font-display text-xl text-on-surface font-bold">
             Divisão & Sabores Artesanais
           </h2>
         </div>
 
-        {/* Toggle Mode: 1 Sabor Inteiro vs Meio a Meio */}
-        <div className="flex p-1 bg-surface-container-lowest rounded-xl self-start sm:self-auto">
+        {/* Toggle Mode Pills */}
+        <div className="flex p-1 bg-surface-container rounded-xl self-start sm:self-auto border border-surface-container-high/50">
           <button
             type="button"
             onClick={() => onModeChange('single')}
-            className={`px-space-sm py-1 rounded-lg font-label-sm text-label-sm uppercase transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg font-label text-xs uppercase transition-all cursor-pointer min-h-[36px] flex items-center gap-1.5 ${
               !isSplit
-                ? 'bg-surface-container-high text-secondary font-semibold'
+                ? 'bg-surface-container-high text-secondary font-bold shadow-xs'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            1 Sabor Inteiro
+            <span className="material-symbols-outlined text-[16px]">pie_chart</span>
+            <span>1 Sabor Inteiro</span>
           </button>
+
           <button
             type="button"
             onClick={() => onModeChange('split')}
-            className={`px-space-sm py-1 rounded-lg font-label-sm text-label-sm uppercase transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg font-label text-xs uppercase transition-all cursor-pointer min-h-[36px] flex items-center gap-1.5 ${
               isSplit
-                ? 'bg-surface-container-high text-secondary font-semibold'
+                ? 'bg-surface-container-high text-secondary font-bold shadow-xs'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            Meio a Meio (2 Sabores)
+            <span className="material-symbols-outlined text-[16px]">call_split</span>
+            <span>Meio a Meio (2 Sabores)</span>
           </button>
         </div>
       </div>
 
-      {/* Flavor Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+      {/* Flavor Columns Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Metade Esquerda (Sabor 1) */}
-        <div className="space-y-space-xs">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="font-label-md text-label-md uppercase text-secondary font-semibold flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-secondary-container"></span>
+            <span className="font-label text-xs uppercase text-secondary font-bold flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
               {isSplit ? 'Metade 1 (Esquerda)' : 'Sabor Escolhido'}
             </span>
-            <span className="font-label-sm text-label-sm text-outline">Incluso</span>
+            <span className="font-label text-[11px] text-outline uppercase font-medium">Incluso</span>
           </div>
 
-          <div className="space-y-space-xs">
+          <div className="space-y-2">
             {MOCK_FLAVORS.map((flavor) => {
               const isSelected = flavor1.id === flavor.id;
+              const formattedExtra = (flavor.extraPriceCents / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              });
+
               return (
                 <div
                   key={`f1-${flavor.id}`}
                   onClick={() => onSelectFlavor(1, flavor)}
-                  className={`p-space-sm rounded-xl flex items-center justify-between cursor-pointer transition-all ${
+                  className={`p-3 rounded-xl flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[64px] ${
                     isSelected
-                      ? 'bg-surface-container-high ring-1 ring-secondary-container/50'
-                      : 'bg-surface-container-low hover:bg-surface-container-high'
+                      ? 'bg-surface-container-high ring-2 ring-secondary-container shadow-sm'
+                      : 'bg-surface-container hover:bg-surface-container-high'
                   }`}
                 >
-                  <div className="flex items-center gap-space-sm">
-                    <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 shadow-xs border border-surface-container-high">
                       <img
                         className="w-full h-full object-cover"
                         src={flavor.image}
@@ -94,25 +103,26 @@ export const FlavorSelector: React.FC<FlavorSelectorProps> = ({
                       />
                     </div>
                     <div>
-                      <p className="font-body-md text-body-md font-semibold text-on-surface">
+                      <p className="font-label text-sm font-bold text-on-surface">
                         {flavor.name}
                       </p>
-                      <p className="font-body-sm text-body-sm text-outline truncate max-w-[170px]">
+                      <p className="font-body text-xs text-on-surface-variant line-clamp-1 max-w-[170px]">
                         {flavor.description}
                       </p>
                     </div>
                   </div>
-                  {isSelected ? (
-                    <span className="material-symbols-outlined text-secondary-container text-[20px]">
-                      check_circle
-                    </span>
-                  ) : (
-                    <span className="font-label-sm text-label-sm text-outline">
-                      {flavor.extraPriceCents > 0
-                        ? `+R$ ${(flavor.extraPriceCents / 100).toFixed(2).replace('.', ',')}`
-                        : 'Sem taxa'}
-                    </span>
-                  )}
+
+                  <div className="shrink-0 text-right">
+                    {isSelected ? (
+                      <span className="material-symbols-outlined text-secondary-container text-[22px]">
+                        check_circle
+                      </span>
+                    ) : (
+                      <span className="font-label text-xs text-outline font-medium">
+                        {flavor.extraPriceCents > 0 ? `+${formattedExtra}` : 'Sem taxa'}
+                      </span>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -121,37 +131,42 @@ export const FlavorSelector: React.FC<FlavorSelectorProps> = ({
 
         {/* Metade Direita (Sabor 2) */}
         <div
-          className={`space-y-space-xs transition-opacity duration-300 ${
-            !isSplit ? 'opacity-40 pointer-events-none' : ''
+          className={`space-y-2 transition-all duration-300 ${
+            !isSplit ? 'opacity-35 pointer-events-none' : ''
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="font-label-md text-label-md uppercase text-primary font-semibold flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-primary-container"></span>
+            <span className="font-label text-xs uppercase text-primary font-bold flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
               Metade 2 (Direita)
             </span>
-            <span className="font-label-sm text-label-sm text-outline">
+            <span className="font-label text-[11px] text-outline uppercase font-medium">
               {flavor2.extraPriceCents > 0
-                ? `+R$ ${(flavor2.extraPriceCents / 100).toFixed(2).replace('.', ',')}`
+                ? `+${(flavor2.extraPriceCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
                 : 'Incluso'}
             </span>
           </div>
 
-          <div className="space-y-space-xs">
+          <div className="space-y-2">
             {MOCK_FLAVORS.map((flavor) => {
               const isSelected = flavor2.id === flavor.id;
+              const formattedExtra = (flavor.extraPriceCents / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              });
+
               return (
                 <div
                   key={`f2-${flavor.id}`}
                   onClick={() => onSelectFlavor(2, flavor)}
-                  className={`p-space-sm rounded-xl flex items-center justify-between cursor-pointer transition-all ${
+                  className={`p-3 rounded-xl flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[64px] ${
                     isSelected
-                      ? 'bg-surface-container-high ring-1 ring-primary-container/50'
-                      : 'bg-surface-container-low hover:bg-surface-container-high'
+                      ? 'bg-surface-container-high ring-2 ring-primary-container shadow-sm'
+                      : 'bg-surface-container hover:bg-surface-container-high'
                   }`}
                 >
-                  <div className="flex items-center gap-space-sm">
-                    <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 shadow-xs border border-surface-container-high">
                       <img
                         className="w-full h-full object-cover"
                         src={flavor.image}
@@ -159,25 +174,26 @@ export const FlavorSelector: React.FC<FlavorSelectorProps> = ({
                       />
                     </div>
                     <div>
-                      <p className="font-body-md text-body-md font-semibold text-on-surface">
+                      <p className="font-label text-sm font-bold text-on-surface">
                         {flavor.name}
                       </p>
-                      <p className="font-body-sm text-body-sm text-outline truncate max-w-[170px]">
+                      <p className="font-body text-xs text-on-surface-variant line-clamp-1 max-w-[170px]">
                         {flavor.description}
                       </p>
                     </div>
                   </div>
-                  {isSelected ? (
-                    <span className="material-symbols-outlined text-secondary-container text-[20px]">
-                      check_circle
-                    </span>
-                  ) : (
-                    <span className="font-label-sm text-label-sm text-outline">
-                      {flavor.extraPriceCents > 0
-                        ? `+R$ ${(flavor.extraPriceCents / 100).toFixed(2).replace('.', ',')}`
-                        : 'Sem taxa'}
-                    </span>
-                  )}
+
+                  <div className="shrink-0 text-right">
+                    {isSelected ? (
+                      <span className="material-symbols-outlined text-primary-container text-[22px]">
+                        check_circle
+                      </span>
+                    ) : (
+                      <span className="font-label text-xs text-outline font-medium">
+                        {flavor.extraPriceCents > 0 ? `+${formattedExtra}` : 'Sem taxa'}
+                      </span>
+                    )}
+                  </div>
                 </div>
               );
             })}

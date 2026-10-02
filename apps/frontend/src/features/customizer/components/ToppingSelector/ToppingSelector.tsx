@@ -14,51 +14,63 @@ export const ToppingSelector: React.FC<ToppingSelectorProps> = ({
   onToggleTopping,
 }) => {
   return (
-    <section className="bg-surface-container rounded-2xl p-space-lg shadow-md space-y-space-md">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-space-xs">
-          <span className="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-label-sm text-label-sm text-primary">
+    <section className="bg-surface-container-low rounded-2xl p-5 md:p-6 shadow-sm border border-surface-container-high/40 space-y-4">
+      {/* Step Header */}
+      <div className="flex items-center justify-between pb-2 border-b border-surface-container-high/40">
+        <div className="flex items-center gap-3">
+          <span className="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label text-xs font-bold shrink-0">
             04
           </span>
-          <h2 className="font-headline-sm text-headline-sm text-on-surface">
+          <h2 className="font-display text-xl text-on-surface font-bold">
             Finalizações & Extras Especiais
           </h2>
         </div>
-        <span className="font-label-sm text-label-sm uppercase text-outline">
+        <span className="font-label text-xs uppercase tracking-wider text-on-surface-variant font-medium hidden sm:inline-block">
           Toppings Pós-Forno
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-space-xs">
+      {/* Topping Chips Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {MOCK_TOPPINGS.map((topping) => {
           const isSelected = selectedToppings.some((t) => t.id === topping.id);
+          const formattedPrice = (topping.priceCents / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          });
+
           return (
             <button
               key={topping.id}
               type="button"
               onClick={() => onToggleTopping(topping)}
-              className={`px-space-md py-space-sm rounded-xl flex items-center gap-2 cursor-pointer transition-all ${
+              className={`px-4 py-3 rounded-xl flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[52px] ${
                 isSelected
-                  ? 'bg-surface-container-high text-on-surface ring-1 ring-secondary-container/50'
-                  : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
+                  ? 'bg-surface-container-high text-on-surface ring-2 ring-tertiary shadow-sm'
+                  : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
               }`}
             >
+              <div className="flex items-center gap-2">
+                <span
+                  className={`material-symbols-outlined text-[20px] transition-colors ${
+                    isSelected ? 'text-tertiary font-bold' : 'text-outline'
+                  }`}
+                >
+                  {isSelected ? 'check_circle' : 'add_circle'}
+                </span>
+                <span className="font-label text-sm font-bold text-on-surface">
+                  {topping.name}
+                </span>
+              </div>
+
               <span
-                className={`material-symbols-outlined text-[18px] ${
-                  isSelected ? 'text-secondary-container' : ''
-                }`}
-              >
-                {isSelected ? 'check_circle' : 'add_circle'}
-              </span>
-              <span className="font-body-md text-body-md">{topping.name}</span>
-              <span
-                className={`px-1.5 py-0.5 rounded font-label-sm text-label-sm font-semibold ${
+                className={`px-2 py-0.5 rounded font-label text-xs font-bold ${
                   isSelected
-                    ? 'bg-secondary-container/20 text-secondary'
-                    : 'bg-surface-container text-primary'
+                    ? 'bg-tertiary/20 text-tertiary'
+                    : 'bg-surface-container-highest text-outline'
                 }`}
               >
-                +R$ {(topping.priceCents / 100).toFixed(2).replace('.', ',')}
+                +{formattedPrice}
               </span>
             </button>
           );

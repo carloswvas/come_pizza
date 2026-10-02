@@ -17,7 +17,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-surface/80"></div>
       </div>
 
-      <div className="relative z-10 max-w-[1440px] mx-auto px-4 md:px-12 pt-40 pb-24 lg:pt-48 lg:pb-32 flex flex-col lg:flex-row items-center justify-between gap-10">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-4 md:px-12 pt-28 pb-16 lg:pt-32 lg:pb-20 flex flex-col lg:flex-row items-center justify-between gap-10">
         {/* Left Column Content */}
         <div className="max-w-2xl space-y-6">
           {/* Live Badges */}
